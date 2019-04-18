@@ -25,8 +25,6 @@ The Makefile for the kernel code can be found [here](https://github.com/Priyanka
 
 The Makefile just makes sure required header files are accessible. The Makefile compiles the kernel code write using _clang_. This is due to the fact that only _clang_ provides an option of specifying a _bpf_ target required for XDP. 
 
-### Different parts of the kernel code
-
 #### Preprocessors
 ```
 #define KBUILD_MODNAME "foo"
@@ -94,7 +92,7 @@ The Makefile to compile the user program can be found [here](https://github.com/
 
 The Makefile just makes sure that the header files are accessible and uses _gcc_ to compile the user program. 
 
-### Finding kernel object file
+#### Finding kernel object file
 ```
 struct bpf_prog_load_attr prog_load_attr = {
 		.prog_type = BPF_PROG_TYPE_XDP,

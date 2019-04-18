@@ -79,3 +79,31 @@ if(ipproto == IPPROTO_UDP){
 This part of the code updates the UDP packet count in the map. _if_ the protocol is UDP then we lookup for the key _ipproto_ using `bpf_map_lookup_elem`. Therefore, the number of UDP packets is stored at key equal to the protocol number of UDP. Lookup returns a pointer to the value and the value can be updated. This code eventually drops all the UDP packets with `return XDP_DROP;`. 
 
 We can now build the kernel program using `make`. 
+
+## User program
+The user program contains the following
+- Finds the kernel object file
+- Loads the kernel object file to an interface
+- Waits for some traffic to be sent to the interface
+- Looks up map field values for all CPUs
+- Adds the values to get total count
+- Displays the total number of UDP packets
+
+The entire user program can be found [here](https://github.com/PriyankaSelvan/xdp-map-udp/blob/master/user/udp_usr.c).
+The Makefile to compile the user program can be found [here](https://github.com/PriyankaSelvan/xdp-map-udp/blob/master/user/Makefile). 
+
+The Makefile just makes sure that the header files are accessible and uses _gcc_ to compile the user program. 
+
+### Finding kernel object file
+```
+struct bpf_prog_load_attr prog_load_attr = {
+		.prog_type = BPF_PROG_TYPE_XDP,
+		.file = "../kernel/udp_kern.o",
+	};
+
+	if(bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd))
+	{
+		printf("\nCould not load program");
+		return 1;
+	}
+```

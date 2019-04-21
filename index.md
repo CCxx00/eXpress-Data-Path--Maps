@@ -65,7 +65,7 @@ struct bpf_map_def SEC("maps") dpcnt = {
 ```
 This is the syntax to follow in order to define a BPF map in an XDP program. The _key_size_, _value_size_, and the _max_entries_ fields are self-explanatory. The _type_ field specifies the type of the map. There are multiple types available for use. Here, the `BPF_MAP_TYPE_PERCPU_ARRAY` type maintains a separate map for each CPU. This is faster since maintaining a central map will spend time in acquiring and releasing locks in order for the CPUs to modify them. In the user program, we will read the values stored by all the CPUs and add them up for our final packet count. 
 
-#### Updating map field
+#### Updating the map field
 ```
 if(ipproto == IPPROTO_UDP){
 		value = bpf_map_lookup_elem(&dpcnt, &ipproto);
@@ -120,7 +120,7 @@ if(bpf_set_link_xdp_fd(ifindex, prog_fd, xdp_flags) < 0) {
 ```
 The XDP program is loaded to an interface taken as a command line argument. `xdp_flags` is set to `XDP_FLAGS_DRV_MODE` where the packets are read by the XDP program before SKB allocation. To be able to read packets after SKB allocation, `xdp_flags` can be set to `XDP_FLAGS_SKB_MODE`. 
 
-#### Read from map
+#### Reading from the map
 ```
 struct bpf_map *map = bpf_object__find_map_by_name(obj, "dpcnt");
         

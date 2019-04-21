@@ -5,8 +5,8 @@ Express Data Path is a programmable fast packet processor in the kernel. Details
 ### [XDP Setup](https://priyankaselvan.github.io/eXpress-Data-Path--Setup/)
 
 ## Other Articles
-### [Using XDP Tail Calls]()
-### [Modifying packets using XDP]()
+### [Using XDP tail calls](https://priyankaselvan.github.io/eXpress-Data-Path--TailCalls)
+### [Modifying packets using xdp](https://priyankaselvan.github.io/eXpress-Data-Path--Modifying-Packets/)
 
 ## BPF maps
 BPF maps are key value stores that can be accessed by both the kernel XDP program and the user program. This is the only method of communication between the kernel XDP program and user space. This article contains instructions to create and access BPF maps from both the kernel XDP program and the user space. 
@@ -154,6 +154,6 @@ This concludes the information required to use BPF maps from XDP programs. Other
 
 
 ### [XDP Setup](https://priyankaselvan.github.io/eXpress-Data-Path--Setup/)
-### [Using XDP Tail Calls]()
-### [Modifying packets using XDP]()
+### [Using XDP tail calls](https://priyankaselvan.github.io/eXpress-Data-Path--TailCalls)
+### [Modifying packets using xdp](https://priyankaselvan.github.io/eXpress-Data-Path--Modifying-Packets/)
 

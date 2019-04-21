@@ -92,7 +92,7 @@ The Makefile to compile the user program can be found [here](https://github.com/
 
 The Makefile just makes sure that the header files are accessible and uses _gcc_ to compile the user program. 
 
-#### Finding kernel object file
+#### Finding the kernel object file
 ```
 struct bpf_object *obj;
 int prog_fd;

@@ -12,7 +12,7 @@ Express Data Path is a programmable fast packet processor in the kernel. Details
 BPF maps are key value stores that can be accessed by both the kernel XDP program and the user program. This is the only method of communication between the kernel XDP program and user space. This article contains instructions to create and access BPF maps from both the kernel XDP program and the user space. 
 
 ## XDP Application
-To illustrate the use of XDP maps, this article describes an XDP program that counts the number of UDP packets it receives and writes it to a BPF map field. A program in user space reads this value and displays it. 
+To illustrate the use of XDP maps, this article describes an XDP program that counts the number of UDP packets it receives and writes it to a BPF map field. A program in user space reads this value and displays it. The entire application can be found in [this](https://github.com/PriyankaSelvan/xdp-map-udp) repository.  
 
 ## Kernel program
 The kernel program contains
@@ -94,6 +94,8 @@ The Makefile just makes sure that the header files are accessible and uses _gcc_
 
 #### Finding kernel object file
 ```
+struct bpf_object *obj;
+int prog_fd;
 struct bpf_prog_load_attr prog_load_attr = {
 		.prog_type = BPF_PROG_TYPE_XDP,
 		.file = "../kernel/udp_kern.o",
@@ -105,3 +107,53 @@ struct bpf_prog_load_attr prog_load_attr = {
 		return 1;
 	}
 ```
+First, the kernel object file is found and loaded to an object of type `bof_object`. The `bpf_prog_load_xattr` function also gets the file descriptor of the kernel program into `prog_fd`. 
+
+#### Loading the kernel program to an interface
+```
+static __u32 xdp_flags = XDP_FLAGS_DRV_MODE;
+int ifindex = if_nametoindex(argv[1]);
+if(bpf_set_link_xdp_fd(ifindex, prog_fd, xdp_flags) < 0) {
+                printf("\nlink set xdp fd failed");
+                return 1;
+        }
+```
+The XDP program is loaded to an interface taken as a command line argument. `xdp_flags` is set to `XDP_FLAGS_DRV_MODE` where the packets are read by the XDP program before SKB allocation. To be able to read packets after SKB allocation, `xdp_flags` can be set to `XDP_FLAGS_SKB_MODE`. 
+
+#### Read from map
+```
+struct bpf_map *map = bpf_object__find_map_by_name(obj, "dpcnt");
+        
+unsigned int nr_cpus = bpf_num_possible_cpus();
+__u64 values[nr_cpus];
+__u32 key = 17; // protocol number for UDP
+__u64 sum = 0;
+int cpu;
+
+if(!map){
+	printf("\nFinding a map obj file failed");
+	return 1;
+}
+
+map_fd = bpf_map__fd(map);
+
+if(bpf_map_lookup_elem(map_fd, &key, &values)){
+	printf("\nLookup failed");
+	return 1;
+}
+	
+for(cpu = 0; cpu < nr_cpus; cpu++)
+	sum += values[cpu];
+```
+Here, the required map is found, its file descriptor is obtained and the required field is looked up. Since, the protocol number of UDP was used as the key, here, the key 17 is used. In the kernel program, the map was of type `BPF_MAP_TYPE_PERCPU_ARRAY`. Therefore, here all the values stored by all the CPUs must be looked up and added up to get the global result. 
+
+### Writing to a map from the user and reading from the kernel
+In a situation where a field has to be written from the userspace and has to be read from the kernel, the procedure is exactly the same. The only thing to keep in mind in this case is that, the user program must be alive when the kernel reads from the map. Otherwise, the kernel program cannot find the entry made by the user program. 
+
+This concludes the information required to use BPF maps from XDP programs. Other articles in the same topic are listed below. 
+
+
+### [XDP Setup](https://priyankaselvan.github.io/eXpress-Data-Path--Setup/)
+### [Using XDP Tail Calls]()
+### [Modifying packets using XDP]()
+

@@ -1,3 +1,4 @@
+Written May 2019
 ## XDP
 Express Data Path is a programmable fast packet processor in the kernel. Details about XDP can be found [here](https://dl.acm.org/citation.cfm?id=3281443), and [here](https://developers.redhat.com/blog/2018/12/06/achieving-high-performance-low-latency-networking-with-xdp-part-1/). This article contains the steps to setup a development environment for XDP.
 
@@ -6,7 +7,8 @@ Express Data Path is a programmable fast packet processor in the kernel. Details
 
 ## Other Articles
 ### [Using XDP tail calls](https://priyankaselvan.github.io/eXpress-Data-Path--TailCalls)
-### [Modifying packets using xdp](https://priyankaselvan.github.io/eXpress-Data-Path--Modifying-Packets/)
+### [Modifying packets using xdp](https://priyaselvan.github.io/eXpress-Data-Path--Packet-Inspection/)
+### [Cloudlab Setup for XDP experimentation](https://punithpatil.github.io/eXpress-Data-Path--Cloudlab-Setup/)
 
 ## BPF maps
 BPF maps are key value stores that can be accessed by both the kernel XDP program and the user program. This is the only method of communication between the kernel XDP program and user space. This article contains instructions to create and access BPF maps from both the kernel XDP program and the user space. 
@@ -155,5 +157,11 @@ This concludes the information required to use BPF maps from XDP programs. Other
 
 ### [XDP Setup](https://priyankaselvan.github.io/eXpress-Data-Path--Setup/)
 ### [Using XDP tail calls](https://priyankaselvan.github.io/eXpress-Data-Path--TailCalls)
-### [Modifying packets using xdp](https://priyankaselvan.github.io/eXpress-Data-Path--Modifying-Packets/)
+### [Modifying packets using xdp](https://priyaselvan.github.io/eXpress-Data-Path--Packet-Inspection/)
+### [Cloudlab Setup for XDP experimentation](https://punithpatil.github.io/eXpress-Data-Path--Cloudlab-Setup/)
+
+#### References
+##### [A walkthrough](https://netdevconf.org/2.1/slides/apr7/gospodarek-Netdev2.1-XDP-for-the-Rest-of-Us_Final.pdf)
+##### [Cilium XDP documentation](https://cilium.readthedocs.io/en/latest/bpf/#development-environment)
+##### [XDP maps example](https://www.linuxplumbersconf.org/event/2/contributions/71/attachments/17/9/presentation-lpc2018-xdp-tutorial.pdf)
 
